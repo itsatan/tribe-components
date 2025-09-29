@@ -4,7 +4,7 @@ export function TribeCardTitle({
     children
 }: PropsWithChildren) {
     return (
-        <h5 className="pr-4 text-gray-700 font-medium text-base truncate whitespace-nowrap overflow-hidden">
+        <h5 className="pr-4 text-gray-700 font-medium text-base truncate whitespace-nowrap overflow-hidden select-none">
             {children}
         </h5>
     );

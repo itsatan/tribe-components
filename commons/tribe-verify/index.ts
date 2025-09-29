@@ -1,2 +1,1 @@
-export * from './tribe-verify-talent'
-export * from './tribe-verify-official'
+export * from './tribe-verify'

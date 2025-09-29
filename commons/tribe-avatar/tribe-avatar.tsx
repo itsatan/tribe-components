@@ -5,8 +5,8 @@ export function TribeAvatar({
     children
 }: PropsWithChildren) {
     return (
-        <Avatar className="size-12 rounded-sm">
-            <AvatarImage src="https://github.com/shadcn.png" />
+        <Avatar className="size-12 rounded-sm select-none">
+            <AvatarImage src="/images/avatar.png" />
             <AvatarFallback className="bg-accent rounded-sm animate-pulse" />
             {children}
         </Avatar>
