@@ -127,7 +127,8 @@
     }
 
     body {
-        @apply flex flex-col text-foreground h-full;
+        @apply flex flex-col text-foreground h-full antialiased;
+        font-family: "Microsoft YaHei","PingFang SC",sans-serif;
         font-synthesis-weight: none;
         text-rendering: optimizeLegibility;
         background-color: #f5f6f7;
