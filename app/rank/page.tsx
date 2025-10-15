@@ -48,22 +48,24 @@ const RankBadge: React.FC<RankBadgeProps> = ({
 };
 
 interface RankingProps {
+    index: number;
     nickname: string;
     coverImage: string;
     color?: string;
 }
 
 const Ranking = ({
+    index,
     nickname,
     coverImage,
     color,
-}:RankingProps) => {
+}: RankingProps) => {
     return (
         <Link
-            className="relative block border border-[#f1f1f1] rounded-sm overflow-hidden hover:opacity-70 transition-opacity duration-300"
+            className="relative block border border-[#f1f1f1] rounded-sm overflow-hidden hover:opacity-70 transition-opacity duration-200"
             href="/"
         >
-            <RankBadge text="TOP 1" color={color} />
+            <RankBadge text={`TOP ${index}`} color={color} />
             <div className="relative w-full h-[120px]">
                 <Image
                     fill
@@ -77,7 +79,11 @@ const Ranking = ({
             </div>
             <div className="relative w-[75px] h-[75px] rounded-full mt-[-50px] mx-auto shadow-[0_0_10px_#fff] z-20">
                 <Avatar className="w-full h-full select-none">
-                    <AvatarImage className="border border-[#f1f1f1] rounded-full" src="/images/avatar.png" />
+                    <AvatarImage
+                        className="border border-[#f1f1f1] rounded-full"
+                        src="/avatars/1.png"
+                        alt="avatar"
+                    />
                     <AvatarFallback className="bg-accent animate-pulse" />
                 </Avatar>
                 <div className="absolute -right-0.5 bottom-0">
@@ -89,7 +95,7 @@ const Ranking = ({
                     <div className="text-base text-[#777]">
                         {nickname || "匿名用户"}
                     </div>
-                    <TribeLevel variant="official" level={12}/>
+                    <TribeLevel variant="official" level={12} />
                 </div>
                 <div className="flex justify-center items-center">
                     <div className="flex justify-center items-center gap-1">
@@ -97,6 +103,57 @@ const Ranking = ({
                             10393 金币
                         </div>
                     </div>
+                </div>
+            </div>
+        </Link>
+    )
+}
+
+interface RankingCompactProps {
+    index: number;
+    nickname: string;
+    avatarImage: string;
+}
+
+const RankingCompact = ({
+    index,
+    nickname,
+    avatarImage,
+}: RankingCompactProps) => {
+    return (
+        <Link
+            className="relative flex items-center overflow-hidden hover:opacity-70 transition-opacity duration-200"
+            href="/"
+        >
+            <div className="w-[30px] text-center shrink-0 text-sm text-[#777]">
+                {index}.
+            </div>
+            <div className="relative w-10 h-10 shrink-0">
+                <Avatar className="w-full h-full rounded-md select-none">
+                    <AvatarImage
+                        className="border border-[#eee] rounded-md"
+                        src={avatarImage}
+                        alt="avatar"
+                    />
+                    <AvatarFallback className="bg-gray-100 rounded-md animate-pulse" />
+                </Avatar>
+                <div className="absolute -right-0.5 bottom-0">
+                    <TribeVerify variant="member" className="size-3" />
+                </div>
+            </div>
+            <div className="flex-1 min-w-0 px-2">
+                <div className="flex items-center gap-1">
+                    <div className="text-sm text-[#333] leading-6 truncate">
+                        {nickname || "匿名用户"}
+                    </div>
+                    {index === 5 && (
+                        <span className="shrink-0 text-[10px] px-1 bg-[#888888] text-white rounded-xs">
+                            BUG
+                        </span>
+                    )}
+                </div>
+                <div className="text-xs text-[#666] truncate">
+                    <span>15 金币</span>
                 </div>
             </div>
         </Link>
@@ -117,7 +174,7 @@ export default function Rank() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.value)}
                                 className={cn(
-                                    "w-full h-[35px] text-sm text-center rounded-sm transition-all duration-300 cursor-pointer",
+                                    "w-full h-[35px] text-sm text-center rounded-sm transition-all duration-200 cursor-pointer",
                                     activeTab === tab.value
                                         ? "bg-[#2f363c] text-white"
                                         : "bg-transparent text-[#777] hover:bg-[#2f363c] hover:text-white",
@@ -128,12 +185,28 @@ export default function Rank() {
                         ))}
                     </div>
                 </div>
-                <div className="flex-1 bg-white rounded-sm p-[15px]">
+                <div className="flex-1 flex flex-col gap-5 bg-white rounded-sm p-[15px]">
                     <div className="grid grid-cols-4 gap-2.5">
-                        <Ranking nickname="匿名用户" coverImage="/images/1.png" color="#ff3b30" />
-                        <Ranking nickname="匿名用户" coverImage="/images/2.jpg" color="#ff9500" />
-                        <Ranking nickname="匿名用户" coverImage="/images/3.jpg" color="#ffcc00" />
-                        <Ranking nickname="匿名用户" coverImage="/images/4.jpg" color="#28a745" />
+                        <Ranking index={1} nickname="匿名用户" coverImage="/covers/1.png" color="#ff3b30" />
+                        <Ranking index={2} nickname="匿名用户" coverImage="/covers/2.jpg" color="#ff9500" />
+                        <Ranking index={3} nickname="匿名用户" coverImage="/covers/3.jpg" color="#ffcc00" />
+                        <Ranking index={4} nickname="匿名用户" coverImage="/covers/4.jpg" color="#28a745" />
+                    </div>
+                    <div className="grid grid-cols-4 gap-5">
+                        <RankingCompact index={5} nickname="匿名用户" avatarImage="/avatars/1.png" />
+                        <RankingCompact index={6} nickname="匿名用户" avatarImage="/avatars/2.png" />
+                        <RankingCompact index={7} nickname="匿名用户" avatarImage="/avatars/3.jpeg" />
+                        <RankingCompact index={8} nickname="匿名用户" avatarImage="/avatars/4.jpeg" />
+                        <RankingCompact index={9} nickname="匿名用户" avatarImage="/avatars/5.gif" />
+                        <RankingCompact index={10} nickname="匿名用户" avatarImage="/avatars/6.jpeg" />
+                        <RankingCompact index={11} nickname="匿名用户" avatarImage="/avatars/7.jpeg" />
+                        <RankingCompact index={12} nickname="匿名用户" avatarImage="/avatars/8.gif" />
+                        <RankingCompact index={13} nickname="匿名用户" avatarImage="/avatars/9.jpg" />
+                        <RankingCompact index={14} nickname="匿名用户" avatarImage="/avatars/10.jpeg" />
+                        <RankingCompact index={15} nickname="匿名用户" avatarImage="/avatars/11.jpg" />
+                        <RankingCompact index={16} nickname="匿名用户" avatarImage="/avatars/12.jpg" />
+                        <RankingCompact index={17} nickname="匿名用户" avatarImage="/avatars/13.webp" />
+                        <RankingCompact index={18} nickname="匿名用户" avatarImage="/avatars/14.jpg" />
                     </div>
                 </div>
             </div>
