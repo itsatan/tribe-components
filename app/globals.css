@@ -78,6 +78,8 @@
     --sidebar-ring: oklch(0.708 0 0);
     --selection: oklch(0.145 0 0);
     --selection-foreground: oklch(1 0 0);
+    --font-family: CapCut Sans, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+    --alphanumeric-font-family: Montserrat, var(--font-family);
 }
 
 .dark {
@@ -128,10 +130,11 @@
 
     body {
         @apply flex flex-col text-foreground h-full antialiased;
-        font-family: "Microsoft YaHei","PingFang SC",sans-serif;
+        font-family: var(--font-family);
         font-synthesis-weight: none;
         text-rendering: optimizeLegibility;
         background-color: #f5f6f7;
+        /* background-color: #0f0f12; */
     }
 
     ::selection {

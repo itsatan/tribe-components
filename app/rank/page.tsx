@@ -165,7 +165,10 @@ export default function Rank() {
     const [activeTab, setActiveTab] = useState(tabs[0].value)
 
     return (
-        <div className="w-[1200px] my-5 mx-auto flex flex-col">
+        <div className="w-[1200px] my-5 mx-auto flex flex-col gap-5">
+            <div className="flex items-center justify-between w-full p-4 bg-white">
+
+            </div>
             <div className="w-full h-full flex gap-x-[15px]">
                 <div className="w-[180px] bg-white rounded-sm p-[15px]">
                     <div className="flex flex-col gap-[15px]">
@@ -174,7 +177,7 @@ export default function Rank() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.value)}
                                 className={cn(
-                                    "w-full h-[35px] text-sm text-center rounded-sm transition-all duration-200 cursor-pointer",
+                                    "w-full h-[35px] text-sm text-center rounded-sm transition-all duration-100 cursor-pointer",
                                     activeTab === tab.value
                                         ? "bg-[#2f363c] text-white"
                                         : "bg-transparent text-[#777] hover:bg-[#2f363c] hover:text-white",
