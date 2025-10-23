@@ -137,6 +137,12 @@
         /* background-color: #0f0f12; */
     }
 
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        backface-visibility: hidden;
+        transform: translateZ(0);
+    }
+
     ::selection {
         background-color: var(--selection);
         color: var(--selection-foreground)
