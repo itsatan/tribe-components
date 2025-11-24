@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function Sidebar() {
     return (
-        <div className="flex flex-col justify-between w-[76px] h-screen px-3 py-5 bg-[#0f0f12] relative">
-            <div className="flex justify-center items-center">
+        <div className="flex flex-col justify-between shrink-0 w-[76px] h-full px-3 py-5 bg-[#0f0f12] relative">
+            <div className="flex justify-center items-center shrink-0">
                 <Image
                     width={40}
                     height={40}
