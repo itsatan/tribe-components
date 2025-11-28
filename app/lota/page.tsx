@@ -8,10 +8,16 @@ import Image from "next/image";
 import clsx from "clsx";
 import { CalendarStrip } from "./components/calendar-strip";
 import { Task } from "@/lib/types";
-import { Button } from "@/components/ui/button";
 import { demoTasks, m } from "./mock";
 import Notifications from "./notifications";
 import Widget from "./widget";
+import DashboardStat from "./stat";
+import ProcessorIcon from "./icons/proccesor";
+import { Button } from "@/components/ui/button";
+
+const iconMap = {
+    proccesor: ProcessorIcon,
+};
 
 interface ImagePreviewProps {
     src: string;
@@ -72,8 +78,9 @@ export const PreviewArea = () => {
             {} as Record<string, number>
         );
     }, [tasks]);
-    const [isRightPanelOpen, setIsRightPanelOpen] = useState(true);
-    const toggleRightPanel = () => setIsRightPanelOpen((v) => !v);
+    const [activePanel, setActivePanel] = useState<'left' | 'right' | 'none'>('right'); // 默认右
+    const isLeftPanelOpen = activePanel === 'left';
+    const isRightPanelOpen = activePanel === 'right';
     const completed = tasks.filter((t) => t.status === "completed").length
     const progress = tasks.length > 0 ? Math.round((completed / tasks.length) * 100) : 0
     const TAB_CONFIG = [
@@ -86,6 +93,21 @@ export const PreviewArea = () => {
     return (
         // bg-[#1a1a1f]
         <div className="flex-1 flex bg-[#0f0f12] rounded-sm overflow-hidden relative">
+            <div
+                className={cn(
+                    "absolute top-0 left-0 w-[450px] h-full bg-[#1a1a1f] p-4",
+                    "transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)]",
+                    isLeftPanelOpen ? "translate-x-0" : "-translate-x-full"
+                )}
+            >
+            </div>
+            <div
+                className={cn(
+                    "pointer-events-none",
+                    "transition-[padding] duration-500 ease-[cubic-bezier(.4,0,.2,1)]",
+                    isLeftPanelOpen ? "pl-[450px]" : "pl-0"
+                )}
+            />
             <div className="flex-1 flex flex-col transition-all duration-300">
                 <CalendarStrip
                     selectedDate={selectedDate}
@@ -93,24 +115,26 @@ export const PreviewArea = () => {
                     taskCounts={taskCounts}
                 />
                 <div className="flex-1 flex flex-col p-4">
-                    <Notifications
-                        initialNotifications={m.notifications}
-                    />
-                    <Button className="w-fit" variant="outline" onClick={toggleRightPanel}>
-                        {isRightPanelOpen ? "关闭" : "打开"}面板
+                    <Notifications initialNotifications={m.notifications} />
+                    <Button
+                        className="w-fit"
+                        variant="outline"
+                        onClick={() => setActivePanel(current => current === 'left' ? 'right' : 'left')}
+                    >
+                        {isLeftPanelOpen ? "关闭左侧" : "打开左侧"}
                     </Button>
                 </div>
             </div>
             <div
                 className={cn(
                     //  border-l border-[rgba(204,221,255,.12)]
-                    "absolute top-0 right-0 w-[450px] h-full bg-[#1a1a1f] p-4",
+                    "absolute top-0 right-0 w-[450px] h-full bg-[#1a1a1f] flex flex-col gap-4 p-4",
                     "transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)]",
                     isRightPanelOpen ? "translate-x-0" : "translate-x-full"
                 )}
             >
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex gap-1">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
                         {TAB_CONFIG.map((tab) => (
                             <button
                                 key={tab.key}
@@ -145,6 +169,17 @@ export const PreviewArea = () => {
                 </div>
                 <div className="sticky">
                     <Widget widgetData={m.widgetData} />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                    {m.dashboardStats.map((stat, index) => (
+                        <DashboardStat
+                            key={index}
+                            label={stat.label}
+                            value={stat.value}
+                            description={stat.description}
+                            icon={iconMap[stat.icon as keyof typeof iconMap]}
+                        />
+                    ))}
                 </div>
             </div>
             <div

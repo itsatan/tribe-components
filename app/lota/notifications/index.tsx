@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Bullet } from "./bullet";
 import NotificationItem from "./notification-item";
 import type { Notification } from "@/types/dashboard";
@@ -16,14 +14,9 @@ interface NotificationsProps {
 export default function Notifications({
     initialNotifications,
 }: NotificationsProps) {
-    const [notifications, setNotifications] =
-        useState<Notification[]>(initialNotifications);
-    const [showAll, setShowAll] = useState(false);
+    const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
 
-    const unreadCount = notifications.filter((n) => !n.read).length;
-    const displayedNotifications = showAll
-        ? notifications
-        : notifications.slice(0, 3);
+    const unreadCount = notifications.length;
 
     const markAsRead = (id: string) => {
         setNotifications((prev) =>
@@ -36,20 +29,20 @@ export default function Notifications({
     };
 
     return (
-        <Card>
-            <CardHeader className="flex items-center justify-between pl-3 pr-1">
-                <CardTitle className="flex items-center gap-2.5 text-xs font-medium uppercase">
+        <div className="text-card-foreground flex flex-col gap-2 rounded-lg p-2.5 bg-[#fafafa06]">
+            <div className="h-8 flex items-center justify-between pl-3">
+                <div className="flex items-center gap-2.5 text-xs font-medium uppercase">
                     {unreadCount > 0 ? <Badge>{unreadCount}</Badge> : <Bullet />}
                     Tasks
-                </CardTitle>
-                <span className="ml-auto text-xs md:text-sm text-muted-foreground block">
+                </div>
+                <span className="ml-auto text-xs text-muted-foreground block">
                     Last updated 12:05
                 </span>
-            </CardHeader>
-            <CardContent className="bg-accent p-1.5 overflow-hidden">
+            </div>
+            <div className="bg-accent p-2.5 overflow-hidden rounded-lg">
                 <div className="space-y-2">
                     <AnimatePresence initial={false} mode="popLayout">
-                        {displayedNotifications.map((notification) => (
+                        {notifications.map((notification) => (
                             <motion.div
                                 layout
                                 initial={{ opacity: 0, x: 20 }}
@@ -72,28 +65,9 @@ export default function Notifications({
                                 </p>
                             </div>
                         )}
-                        {notifications.length > 3 && (
-                            <motion.div
-                                layout
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 20 }}
-                                transition={{ duration: 0.3, ease: "easeOut" }}
-                                className="w-full"
-                            >
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setShowAll(!showAll)}
-                                    className="w-full"
-                                >
-                                    {showAll ? "Show Less" : `Show All (${notifications.length})`}
-                                </Button>
-                            </motion.div>
-                        )}
                     </AnimatePresence>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }

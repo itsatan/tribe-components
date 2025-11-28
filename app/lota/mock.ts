@@ -82,27 +82,15 @@ export const m = {
     "dashboardStats": [
         {
             "label": "ISSUES COMPLETED",
-            "value": "49%",
-            "description": "WEEKLY SCOPE",
-            "intent": "positive",
-            "icon": "gear",
-            "direction": "up"
-        },
-        {
-            "label": "MINUTES LOST",
-            "value": "642'",
-            "description": "IN MEETINGS AND RABBIT HOLES",
-            "intent": "negative",
+            "value": "49 %",
+            "description": "WEEK",
             "icon": "proccesor",
-            "direction": "down"
         },
         {
-            "label": "ACCIDENTS",
-            "value": "0",
-            "description": "THE CLIENT ALWAYS IS RIGHT",
-            "intent": "neutral",
-            "icon": "boom",
-            "tag": "4 weeks 🔥"
+            "label": "OPEN ISSUES",
+            "value": "12 %",
+            "description": "WEEK",
+            "icon": "proccesor",
         }
     ],
     "chartData": {
@@ -257,7 +245,7 @@ export const m = {
     "notifications": [
         {
             "id": "notif-1",
-            "title": "状态[圆点] 前缀[标签] 所属项目[标签] 优先级[标签] 历史遗留[标签]",
+            "title": "编号 状态[圆点] 前缀[标签] 所属项目[标签] 优先级[标签] 历史遗留[标签] 图片[icon] （点击查看详情 左侧弹出 右侧关闭）",
             "message": "Your payment to Rampant Studio has been processed successfully.",
             "timestamp": "2024-07-10T13:39:00Z",
             "type": "success",
@@ -290,6 +278,42 @@ export const m = {
             "type": "warning",
             "read": true,
             "priority": "high"
+        },
+        {
+            "id": "notif-5",
+            "title": "HTML WARNINGS",
+            "message": "12042 accessibility warnings detected in your HTML code.",
+            "timestamp": "2024-07-10T10:30:00Z",
+            "type": "warning",
+            "read": false,
+            "priority": "low"
+        },
+        {
+            "id": "notif-6",
+            "title": "GUARD BOTS",
+            "message": "All guard bots are running smoothly.",
+            "timestamp": "2024-07-10T09:00:00Z",
+            "type": "success",
+            "read": true,
+            "priority": "medium"
+        },
+        {
+            "id": "notif-7",
+            "title": "PAYMENT DUE",
+            "message": "Your payment to Rampant Studio is due in 2 days.",
+            "timestamp": "2024-07-08T15:00:00Z",
+            "type": "info",
+            "read": false,
+            "priority": "high"
+        },
+        {
+            "id": "notif-8",
+            "title": "SYSTEM MAINTENANCE",
+            "message": "Scheduled maintenance from 10:00 AM to 11:00 AM.",
+            "timestamp": "2024-07-07T14:00:00Z",
+            "type": "info",
+            "read": true,
+            "priority": "medium"
         }
     ],
     "widgetData": {

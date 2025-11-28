@@ -62,7 +62,7 @@ export default function NotificationItem({
     return (
         <div
             className={cn(
-                "group p-3 rounded-lg border transition-all duration-200 hover:shadow-sm",
+                "group px-3 py-2 rounded-lg border transition-all duration-200 hover:shadow-sm",
                 !notification.read && "cursor-pointer",
                 notification.read
                     ? "bg-background/50 border-border/30"
@@ -81,7 +81,7 @@ export default function NotificationItem({
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-2 mb-1">
+                            <div className="flex items-center justify-between gap-2">
                                 <div className="flex items-center gap-2 min-w-0 flex-1">
                                     <h4
                                         className={cn(
@@ -97,9 +97,9 @@ export default function NotificationItem({
                                     variant="ghost"
                                     size="sm"
                                     onClick={handleClearClick}
-                                    className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-6 px-2 text-muted-foreground hover:text-destructive shrink-0"
+                                    className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-6 px-2 text-muted-foreground hover:text-destructive shrink-0 rounded-sm cursor-pointer"
                                 >
-                                    clear
+                                    Delete
                                 </Button>
                             </div>
                             <p className="text-xs text-muted-foreground line-clamp-2">
