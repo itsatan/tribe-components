@@ -83,7 +83,7 @@ export const m = {
         {
             "label": "ISSUES COMPLETED",
             "value": "49 %",
-            "description": "WEEK",
+            "description": "DAY",
             "icon": "proccesor",
         },
         {
@@ -91,7 +91,7 @@ export const m = {
             "value": "12 %",
             "description": "WEEK",
             "icon": "proccesor",
-        }
+        },
     ],
     "chartData": {
         "week": [

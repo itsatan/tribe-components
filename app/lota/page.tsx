@@ -14,6 +14,7 @@ import Widget from "./widget";
 import DashboardStat from "./stat";
 import ProcessorIcon from "./icons/proccesor";
 import { Button } from "@/components/ui/button";
+import { ChartAreaInteractive } from "./components/weekly";
 
 const iconMap = {
     proccesor: ProcessorIcon,
@@ -85,11 +86,19 @@ export const PreviewArea = () => {
     const progress = tasks.length > 0 ? Math.round((completed / tasks.length) * 100) : 0
     const TAB_CONFIG = [
         { key: 'tasks', label: '任务视图', component: 'TaskList' },
-        { key: 'analytics', label: '数据分析', component: 'Analytics' },
         { key: 'history', label: '历史记录', component: 'History' },
         { key: 'settings', label: '设置', component: 'Settings' },
     ] as const;
     const [activeTab, setActiveTab] = useState<'tasks' | 'analytics' | 'history' | 'settings'>('tasks');
+    const [dateRange, setDateRange] = useState<DateRange>("week")
+    type DateRange = "today" | "week" | "month" | "custom"
+    const rangeOptions: { id: DateRange; label: string }[] = [
+        { id: "today", label: "今天" },
+        { id: "week", label: "本周" },
+        { id: "month", label: "本月" },
+        { id: "custom", label: "自定义" },
+    ]
+
     return (
         // bg-[#1a1a1f]
         <div className="flex-1 flex bg-[#0f0f12] rounded-sm overflow-hidden relative">
@@ -117,7 +126,7 @@ export const PreviewArea = () => {
                 <div className="flex-1 flex flex-col p-4">
                     <Notifications initialNotifications={m.notifications} />
                     <Button
-                        className="w-fit"
+                        className="w-fit hidden"
                         variant="outline"
                         onClick={() => setActivePanel(current => current === 'left' ? 'right' : 'left')}
                     >
@@ -127,7 +136,6 @@ export const PreviewArea = () => {
             </div>
             <div
                 className={cn(
-                    //  border-l border-[rgba(204,221,255,.12)]
                     "absolute top-0 right-0 w-[450px] h-full bg-[#1a1a1f] flex flex-col gap-4 p-4",
                     "transition-transform duration-500 ease-[cubic-bezier(.4,0,.2,1)]",
                     isRightPanelOpen ? "translate-x-0" : "translate-x-full"
@@ -181,6 +189,22 @@ export const PreviewArea = () => {
                         />
                     ))}
                 </div>
+                {/* 日期范围选择 */}
+                <div className="flex gap-1">
+                    {rangeOptions.map((opt) => (
+                        <button
+                            key={opt.id}
+                            onClick={() => setDateRange(opt.id)}
+                            className={cn(
+                                "px-2.5 py-1 text-[10px] rounded transition-all",
+                                dateRange === opt.id ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-surface-hover",
+                            )}
+                        >
+                            {opt.label}
+                        </button>
+                    ))}
+                </div>
+                <ChartAreaInteractive />
             </div>
             <div
                 className={cn(

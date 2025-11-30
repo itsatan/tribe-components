@@ -1,43 +1,17 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import {
-    IconApps,
     IconArrowUp,
-    IconAt,
-    IconBook,
-    IconCircleDashedPlus,
     IconPaperclip,
-    IconPlus,
-    IconWorld,
-    IconX,
 } from "@tabler/icons-react"
-
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge"
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuGroup,
-    DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Field, FieldLabel } from "@/components/ui/field"
@@ -47,12 +21,6 @@ import {
     InputGroupButton,
     InputGroupTextarea,
 } from "@/components/ui/input-group"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { Switch } from "@/components/ui/switch"
 import {
     Tooltip,
     TooltipContent,
@@ -144,51 +112,11 @@ const SAMPLE_DATA = {
     ],
 }
 
-function MentionableIcon({
-    item,
-}: {
-    item: (typeof SAMPLE_DATA.mentionable)[0]
-}) {
-    return item.type === "page" ? (
-        <span className="flex size-4 items-center justify-center">
-            {item.image}
-        </span>
-    ) : (
-        <Avatar className="size-4">
-            <AvatarImage src={item.image} />
-            <AvatarFallback>{item.title[0]}</AvatarFallback>
-        </Avatar>
-    )
-}
-
 export function NotionPromptForm() {
-    const [mentions, setMentions] = useState<string[]>([])
-    const [mentionPopoverOpen, setMentionPopoverOpen] = useState(false)
     const [modelPopoverOpen, setModelPopoverOpen] = useState(false)
     const [selectedModel, setSelectedModel] = useState<
         (typeof SAMPLE_DATA.models)[0]
     >(SAMPLE_DATA.models[0])
-    const [scopeMenuOpen, setScopeMenuOpen] = useState(false)
-
-    const grouped = useMemo(() => {
-        return SAMPLE_DATA.mentionable.reduce(
-            (acc, item) => {
-                const isAvailable = !mentions.includes(item.title)
-
-                if (isAvailable) {
-                    if (!acc[item.type]) {
-                        acc[item.type] = []
-                    }
-                    acc[item.type].push(item)
-                }
-                return acc
-            },
-            {} as Record<string, typeof SAMPLE_DATA.mentionable>
-        )
-    }, [mentions])
-
-    const hasMentions = mentions.length > 0
-
     return (
         <form>
             <Field>
@@ -200,85 +128,6 @@ export function NotionPromptForm() {
                         id="notion-prompt"
                         placeholder="Ask, search, or make anything..."
                     />
-                    <InputGroupAddon align="block-start">
-                        <Popover
-                            open={mentionPopoverOpen}
-                            onOpenChange={setMentionPopoverOpen}
-                        >
-                            <Tooltip>
-                                <TooltipTrigger
-                                    asChild
-                                    onFocusCapture={(e) => e.stopPropagation()}
-                                >
-                                    <PopoverTrigger asChild>
-                                        <InputGroupButton
-                                            variant="outline"
-                                            size={!hasMentions ? "sm" : "icon-sm"}
-                                            className="rounded-full transition-transform"
-                                        >
-                                            <IconAt /> {!hasMentions && "Add context"}
-                                        </InputGroupButton>
-                                    </PopoverTrigger>
-                                </TooltipTrigger>
-                                <TooltipContent>Mention a person, page, or date</TooltipContent>
-                            </Tooltip>
-                            <PopoverContent className="p-0 [--radius:1.2rem]" align="start">
-                                <Command>
-                                    <CommandInput placeholder="Search pages..." />
-                                    <CommandList>
-                                        <CommandEmpty>No pages found</CommandEmpty>
-                                        {Object.entries(grouped).map(([type, items]) => (
-                                            <CommandGroup
-                                                key={type}
-                                                heading={type === "page" ? "Pages" : "Users"}
-                                            >
-                                                {items.map((item) => (
-                                                    <CommandItem
-                                                        key={item.title}
-                                                        value={item.title}
-                                                        onSelect={(currentValue) => {
-                                                            setMentions((prev) => [...prev, currentValue])
-                                                            setMentionPopoverOpen(false)
-                                                        }}
-                                                    >
-                                                        <MentionableIcon item={item} />
-                                                        {item.title}
-                                                    </CommandItem>
-                                                ))}
-                                            </CommandGroup>
-                                        ))}
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                        <div className="no-scrollbar -m-1.5 flex gap-1 overflow-y-auto p-1.5">
-                            {mentions.map((mention) => {
-                                const item = SAMPLE_DATA.mentionable.find(
-                                    (item) => item.title === mention
-                                )
-
-                                if (!item) {
-                                    return null
-                                }
-
-                                return (
-                                    <InputGroupButton
-                                        key={mention}
-                                        size="sm"
-                                        variant="secondary"
-                                        className="rounded-full !pl-2"
-                                        onClick={() => {
-                                            setMentions((prev) => prev.filter((m) => m !== mention))
-                                        }}
-                                    >
-                                        <MentionableIcon item={item} />
-                                        {item.title}
-                                        <IconX />
-                                    </InputGroupButton>
-                                )
-                            })}
-                        </div>
-                    </InputGroupAddon>
                     <InputGroupAddon align="block-end" className="gap-1">
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -340,109 +189,9 @@ export function NotionPromptForm() {
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <DropdownMenu open={scopeMenuOpen} onOpenChange={setScopeMenuOpen}>
-                            <DropdownMenuTrigger asChild>
-                                <InputGroupButton size="sm" className="rounded-full">
-                                    <IconWorld /> All Sources
-                                </InputGroupButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                                side="top"
-                                align="end"
-                                className="[--radius:1rem]"
-                            >
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem
-                                        asChild
-                                        onSelect={(e) => e.preventDefault()}
-                                    >
-                                        <label htmlFor="web-search">
-                                            <IconWorld /> Web Search{" "}
-                                            <Switch
-                                                id="web-search"
-                                                className="ml-auto"
-                                                defaultChecked
-                                            />
-                                        </label>
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem
-                                        asChild
-                                        onSelect={(e) => e.preventDefault()}
-                                    >
-                                        <label htmlFor="apps">
-                                            <IconApps /> Apps and Integrations
-                                            <Switch id="apps" className="ml-auto" defaultChecked />
-                                        </label>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
-                                        <IconCircleDashedPlus /> All Sources I can access
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSub>
-                                        <DropdownMenuSubTrigger>
-                                            <Avatar className="size-4">
-                                                <AvatarImage src="https://github.com/shadcn.png" />
-                                                <AvatarFallback>CN</AvatarFallback>
-                                            </Avatar>
-                                            shadcn
-                                        </DropdownMenuSubTrigger>
-                                        <DropdownMenuSubContent className="w-72 p-0 [--radius:1rem]">
-                                            <Command>
-                                                <CommandInput
-                                                    placeholder="Find or use knowledge in..."
-                                                    autoFocus
-                                                />
-                                                <CommandList>
-                                                    <CommandEmpty>No knowledge found</CommandEmpty>
-                                                    <CommandGroup>
-                                                        {SAMPLE_DATA.mentionable
-                                                            .filter((item) => item.type === "user")
-                                                            .map((user) => (
-                                                                <CommandItem
-                                                                    key={user.title}
-                                                                    value={user.title}
-                                                                    onSelect={() => {
-                                                                        // Handle user selection here
-                                                                        console.log("Selected user:", user.title)
-                                                                    }}
-                                                                >
-                                                                    <Avatar className="size-4">
-                                                                        <AvatarImage src={user.image} />
-                                                                        <AvatarFallback>
-                                                                            {user.title[0]}
-                                                                        </AvatarFallback>
-                                                                    </Avatar>
-                                                                    {user.title}{" "}
-                                                                    <span className="text-muted-foreground">
-                                                                        - {user.workspace}
-                                                                    </span>
-                                                                </CommandItem>
-                                                            ))}
-                                                    </CommandGroup>
-                                                </CommandList>
-                                            </Command>
-                                        </DropdownMenuSubContent>
-                                    </DropdownMenuSub>
-                                    <DropdownMenuItem>
-                                        <IconBook /> Help Center
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <IconPlus /> Connect Apps
-                                    </DropdownMenuItem>
-                                    <DropdownMenuLabel className="text-muted-foreground text-xs">
-                                        We&apos;ll only search in the sources selected here.
-                                    </DropdownMenuLabel>
-                                </DropdownMenuGroup>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
                         <InputGroupButton
                             aria-label="Send"
-                            className="ml-auto rounded-full"
+                            className="ml-auto rounded-sm"
                             variant="default"
                             size="icon-sm"
                         >

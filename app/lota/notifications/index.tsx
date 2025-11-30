@@ -6,6 +6,7 @@ import { Bullet } from "./bullet";
 import NotificationItem from "./notification-item";
 import type { Notification } from "@/types/dashboard";
 import { AnimatePresence, motion } from "framer-motion";
+import { NotionPromptForm } from "../components/notion-prompt-form";
 
 interface NotificationsProps {
     initialNotifications: Notification[];
@@ -68,6 +69,7 @@ export default function Notifications({
                     </AnimatePresence>
                 </div>
             </div>
+            <NotionPromptForm/>
         </div>
     );
 }
